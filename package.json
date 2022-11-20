@@ -5,7 +5,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "react": "^18.2.0",
