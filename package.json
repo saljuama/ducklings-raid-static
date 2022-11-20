@@ -2,6 +2,7 @@
   "name": "ducklings-raid-static",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://saljuama.github.io/ducklings-raid-static",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
