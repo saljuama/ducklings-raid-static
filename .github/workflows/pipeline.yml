@@ -83,6 +83,7 @@ jobs:
           wait-on: http://localhost:3000
 
   deploy:
+    needs: [unit-tests, functional-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 💻
