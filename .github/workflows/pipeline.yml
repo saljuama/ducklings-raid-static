@@ -3,10 +3,12 @@ name: pipeline
 on:
   push:
     branches: [main]
+permissions:
+  contents: write
 
 jobs:
 
-  update-dependencies:
+  dependencies:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 💻
@@ -30,7 +32,7 @@ jobs:
         run: yarn install
 
   unit-tests:
-    needs: update-dependencies
+    needs: dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 💻
@@ -54,7 +56,7 @@ jobs:
         run: yarn test
 
   functional-tests:
-    needs: update-dependencies
+    needs: dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 💻
@@ -79,3 +81,30 @@ jobs:
         with:
           start: yarn start
           wait-on: http://localhost:3000
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 💻
+        uses: actions/checkout@v3
+      - name: Setup NodeJS 🏃‍
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Restore cache 💨
+        uses: actions/cache@v3
+        id: yarn-build-cache
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+            build
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-
+      - name: Build
+        run: yarn build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
