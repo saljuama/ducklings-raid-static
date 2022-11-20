@@ -1,9 +1,10 @@
-name: ducklings-raid-static-pipeline
+name: pipeline
 
 on:
   push:
     branches:
       -main
+  workflow_dispatch:
 
 jobs:
 
