@@ -29,3 +29,54 @@ jobs:
             ${{ runner.os }}-dependencies-
       - name: Dependencies 📦
         run: yarn install
+
+  unit-tests:
+    needs: update-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 💻
+        uses: actions/checkout@v3
+      - name: Setup NodeJS 🏃‍
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Restore cache 💨
+        uses: actions/cache@v3
+        id: yarn-build-cache
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+            build
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-
+      - name: Run Tests 🧪
+        run: yarn test
+
+  functional-tests:
+    needs: update-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 💻
+        uses: actions/checkout@v3
+      - name: Setup NodeJS 🏃‍
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Restore cache 💨
+        uses: actions/cache@v3
+        id: yarn-build-cache
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+            build
+          key: ${{ runner.os }}-dependencies-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dependencies-
+      - name: Run Tests 🧪
+        uses: cypress-io/github-action@v4
+        with:
+          start: yarn start
+          wait-on: http://localhost:3000
