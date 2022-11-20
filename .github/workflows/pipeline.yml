@@ -1,4 +1,4 @@
-name: Ducklings Raid Static Pipeline
+name: ducklings-raid-static-pipeline
 
 on:
   push:
